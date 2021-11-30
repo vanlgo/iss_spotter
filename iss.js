@@ -16,7 +16,8 @@ const fetchMyIP = (callback) => {
     }
 
     // if we get here, all's well and we got the data
-    callback(null, JSON.parse(body).ip);
+    const foundIP = JSON.parse(body).ip;
+    callback(null, foundIP);
     return;
   });
 };
@@ -43,7 +44,7 @@ const fetchCoordsByIP = (ip, callback) => {
   });
 };
 
-// fetches fly over times 
+// fetches fly over times
 const fetchISSFlyOverTimes = (coords, callback) => {
   request(`https://iss-pass.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`, (error, response, body) => {
     // error can be set if invalid domain, user is offline, etc.
@@ -59,11 +60,13 @@ const fetchISSFlyOverTimes = (coords, callback) => {
     }
 
     // if we get here, all's well and we got the data
-    callback(null, JSON.parse(body).response);
+    const flyOvers = JSON.parse(body).response;
+    callback(null, flyOvers);
     return;
   });
 };
 
+// Works all functions to finds ISS fly over times for specified IP
 const nextISSTimesForMyLocation = (callback) => {
   fetchMyIP((error, ip) => {
     if (error) {
@@ -88,7 +91,7 @@ const nextISSTimesForMyLocation = (callback) => {
       });
     });
   });
-}
+};
 
 
 module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation };
